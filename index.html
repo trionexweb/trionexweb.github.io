@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Velora — Premium Dining</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link rel="preload" as="image" href="images/hero.webp">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Outfit','Noto Sans',sans-serif}
+body{background:#0b0b0b;color:#eee}
+html{scroll-behavior:smooth}
+:root{--navH:110px}
+section{scroll-margin-top:var(--navH)}
+body::-webkit-scrollbar{width:0}
+
+/* NAVBAR CENTERED */
+header{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:20px 5%;position:sticky;top:0;z-index:1000;height:80px;background:rgba(15,15,15,0.4);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.08);box-shadow:0 8px 25px rgba(0,0,0,0.2);transition:all .3s ease}
+.logo{color:#ff7a18;font-size:26px;font-weight:700}
+nav{justify-self:center}
+nav a{margin:0 15px;color:#aaa;text-decoration:none;position:relative;padding-bottom:4px}
+nav a::after{content:'';position:absolute;left:0;bottom:0;width:0;height:2px;background:#ff7a18;transition:width .3s ease}
+nav a:hover{color:#fff}
+nav a:hover::after{width:100%}
+.nav-btn{justify-self:end;background:#ff7a18;padding:10px 18px;border-radius:25px;color:#fff;text-decoration:none;transition:.3s}
+.nav-btn:hover{transform:scale(1.1);box-shadow:0 0 15px rgba(255,122,24,.6)}
+.cursor{position:fixed;width:200px;height:200px;background:radial-gradient(circle,#ff7a18,transparent);filter:blur(70px);pointer-events:none;border-radius:50%;opacity:.5;transform:translate(-50%,-50%)}
+
+/* HERO WITH BG IMAGE */
+.hero{height:90vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:url('images/hero.webp') center/cover no-repeat;z-index:-2}
+.hero::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,.65);z-index:-1}
+.hero h1{font-size:70px}
+.hero span{color:#ff7a18}
+.hero p{color:#ccc;margin-top:10px}
+.hero .btn{margin-top:20px;font-size:17px;padding:12px 35px}
+
+.section{margin:120px auto;width:90%}
+.section h2{color:#ff7a18;margin-bottom:20px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:25px}
+.card{background:#111;border-radius:20px;overflow:hidden;transition:.4s}
+.card img{width:100%;height:240px;object-fit:cover}
+.card:hover{transform:translateY(-12px) scale(1.05);box-shadow:0 25px 50px rgba(255,122,24,.3)}
+
+.about-box{display:flex;gap:50px;align-items:center}
+.about-img img{width:420px;border-radius:20px;border:2px solid rgba(255,122,24,.3);transition:.4s}
+.about-img img:hover{transform:scale(1.05)}
+.about-text{flex:1;color:#bbb;line-height:1.9}
+
+.gallery{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;height:100vh;gap:20px}
+.gallery img{width:100%;height:100%;object-fit:cover;border-radius:20px;border:2px solid rgba(255,122,24,.3);transition:.4s}
+.gallery img:hover{transform:scale(1.05);box-shadow:0 20px 40px rgba(255,122,24,.3)}
+
+.booking-wrap{display:grid;grid-template-columns:1fr 1fr;gap:30px}
+.booking-card,.map-card{background:#111;padding:25px;border-radius:20px;transition:.3s}
+.booking-card:hover,.map-card:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(255,122,24,.2)}
+.booking-card input{width:100%;margin:10px 0;padding:14px;background:#1a1a1a;border:1px solid rgba(255,122,24,.2);color:#fff;border-radius:10px;transition:.3s}
+.booking-card input:focus{outline:none;border-color:#ff7a18;box-shadow:0 0 10px rgba(255,122,24,.3)}
+.booking-card input[type="date"],.booking-card input[type="time"]{color:#aaa}
+.booking-card input[type="date"]::-webkit-calendar-picker-indicator,.booking-card input[type="time"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:pointer}
+.booking-card button{background:#ff7a18;border:none;padding:12px 20px;border-radius:25px;color:#fff;cursor:pointer;width:100%;margin-top:10px;transition:.3s}
+.booking-card button:hover{transform:scale(1.05);box-shadow:0 0 15px rgba(255,122,24,.5)}
+.map-card iframe{width:100%;height:100%;min-height:320px;border:0;border-radius:15px}
+
+.btn{background:#cc5f0f;border:none;padding:14px 32px;border-radius:50px;color:#fff;cursor:pointer;font-weight:600;letter-spacing:.5px;transition:all .35s ease;box-shadow:0 10px 25px rgba(255,122,24,.35);position:relative;overflow:hidden;text-decoration:none}
+.btn:hover{transform:translateY(-3px) scale(1.05);box-shadow:0 15px 40px rgba(255,122,24,.6)}
+.btn::after{content:'';position:absolute;top:0;left:-75%;width:50%;height:100%;background:linear-gradient(120deg,transparent,rgba(255,255,255,.4),transparent);transform:skewX(-25deg)}
+.btn:hover::after{left:130%;transition:.6s}
+.magnetic-btn {will-change: transform;}
+
+.whatsapp{position:fixed;bottom:20px;right:20px;background:#25D366;color:#fff;padding:15px 20px;border-radius:50px;transition:.3s;text-decoration:none}
+.whatsapp:hover{transform:scale(1.1);box-shadow:0 0 15px rgba(37,211,102,.6)}
+
+.menu-wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:40px;margin-top:120px}
+.menu-card{background:#111;padding:90px 30px 50px;border-radius:25px;text-align:center;position:relative;transition:.4s;min-height:360px;overflow:visible}
+.menu-card h3{margin-top:110px;font-size:22px;transition:opacity .3s ease}
+.menu-card:hover h3{opacity:1}
+.menu-card:hover{transform:translateY(-15px) scale(1.03);box-shadow:0 25px 60px rgba(255,122,24,.3)}
+.menu-img{position:absolute;top:-70px;left:50%;transform:translateX(-50%);width:170px;height:170px}
+.menu-img img{width:170px;height:170px;border-radius:50%;object-fit:cover;border:5px solid #0b0b0b;display:block}
+.menu-desc{color:#bbb;margin-top:15px;line-height:1.7;font-size:15px}
+.explore-wrap{display:flex;justify-content:center;margin-top:60px}
+.explore-btn{font-size:16px;padding:14px 35px;border-radius:40px;letter-spacing:1px;text-decoration:none;display:inline-block}
+.explore-btn:hover{transform:scale(1.12);box-shadow:0 0 20px rgba(255,122,24,.7)}
+
+.contact-card{padding:25px;border-radius:20px;min-height:360px;background:#111;transition:.3s}
+.contact-card h3{margin-bottom:15px;color:#ff7a18}
+.contact-card p{color:#bbb;line-height:1.7;margin-bottom:10px}
+.contact-card a{transition:all 0.3s ease}
+.contact-card a:hover{color:#fff;text-shadow:0 0 12px rgba(255,122,24,.8)}
+
+.booking-column h2,.contact-column h2{margin-bottom:20px}
+.booking-column h2::after,.contact-column h2::after{content:'';display:block;width:60px;height:3px;background:#ff7a18;margin:10px 0 30px;border-radius:2px}
+
+.contact-link{color:#ff7a18;text-decoration:none;transition:all 0.3s ease}
+.contact-link:hover{color:#fff;text-shadow:0 0 12px rgba(255,122,24,.8)}
+
+#booking{margin-bottom:53px}
+
+@media(max-width:900px){:root{--navH:150px}header{grid-template-columns:1fr;height:auto;padding:16px 5% 14px;gap:10px;text-align:center}.logo{font-size:24px}nav{margin-top:0;display:flex;flex-wrap:wrap;justify-content:center;gap:10px 16px}nav a{margin:0;font-size:14px}.nav-btn{display:none}.hero{height:78vh;padding:0 18px}.hero h1{font-size:42px;line-height:1.15}.hero p{font-size:15px;line-height:1.6}.section{width:92%;margin:90px auto}.menu-wrap{grid-template-columns:1fr;gap:95px;margin-top:90px}.menu-card{min-height:auto;padding:105px 20px 30px}.menu-img{top:-58px;width:140px;height:140px}.menu-img img{width:140px;height:140px}.menu-card h3{margin-top:0;font-size:21px;line-height:1.3}.menu-desc{font-size:14px;line-height:1.7}.about-box{flex-direction:column;gap:24px}.about-img{width:100%}.about-img img{width:100%;max-width:100%;display:block}.about-text{width:100%;font-size:15px;line-height:1.8}.gallery{height:auto;grid-template-columns:1fr;grid-template-rows:auto}.gallery img{height:260px}.booking-wrap{grid-template-columns:1fr}}
+
+#msg{margin-top:12px;color:#ff7a18;font-family:'Outfit',sans-serif;font-size:15px;line-height:1.6;font-weight:500;text-shadow:0 0 8px rgba(255,122,24,.25);min-height:24px}
+#msg.success{color:#ff7a18}
+#msg.error{color:#ff7a18}
+
+#booking-options{display:none;flex-wrap:wrap;grid-template-columns:1fr 1fr;gap:12px;width:100%}
+.booking-option-btn{width:auto !important;margin-top:0 !important;padding:10px 22px !important;border-radius:30px !important;font-size:14px}
+#booking-action-wrap{margin-top:10px}
+
+.booking-split-btn{background:#ff7a18;border:none;padding:12px 20px;border-radius:25px;color:#fff;cursor:pointer;width:100%;transition:.3s;font-family:'Outfit',sans-serif;font-size:15px}
+.booking-split-btn:hover{transform:scale(1.05);box-shadow:0 0 15px rgba(255,122,24,.5)}
+
+/* MENU BOOK MODAL */
+.menu-modal{position:fixed;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;padding:30px;z-index:3000;opacity:0;pointer-events:none;transition:opacity .35s ease}
+.menu-modal.active{opacity:1;pointer-events:auto}
+.menu-book-wrap{width:min(980px,95vw);display:flex;flex-direction:column;align-items:center;gap:18px}
+.menu-book-stage{position:relative;width:min(960px,95vw);height:min(620px,78vh)}
+.menu-page{position:absolute;inset:0;background:#050505;border:1px solid rgba(255,122,24,.15);border-radius:22px;box-shadow:0 30px 60px rgba(0,0,0,.45), inset 0 0 40px rgba(255,255,255,.02);overflow:hidden;opacity:0;visibility:hidden;transform:scale(.985);transition:opacity .35s ease, transform .35s ease, visibility .35s ease}
+.menu-page.active{opacity:1;visibility:visible;transform:scale(1)}
+.menu-page::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,122,24,.05),transparent 18%,transparent 82%,rgba(255,255,255,.02));pointer-events:none}
+.menu-page-content{height:100%}
+.menu-cover{display:flex;align-items:center;justify-content:center;text-align:center;height:100%;padding:40px}
+.menu-cover-inner{max-width:600px}
+.menu-cover h3{font-size:100px;color:#ff7a18;letter-spacing:10px;margin-bottom:22px;line-height:1}
+.menu-cover p{font-size:22px;color:#d1d1d1;letter-spacing:5px;text-transform:uppercase;line-height:1.5}
+.menu-sheet{height:100%;padding:25px 34px 20px;display:grid;grid-template-columns:1fr 1fr;column-gap:36px;position:relative;}
+.menu-sheet::after{content:'';position:absolute;top:120px;bottom:20px;left:50%;width:1px;background:rgba(255,255,255,.08);}
+.menu-half{display:flex;flex-direction:column;min-width:0}
+.menu-half.left{padding-right:18px}
+.menu-half.right{padding-left:18px}
+.menu-top-header{grid-column:1 / -1;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:18px;}
+.menu-brand{color:#ff7a18;font-size:64px;font-weight:700;line-height:1;}
+.menu-header-line{width:100%;height:1px;background:linear-gradient(90deg,rgba(255,122,24,.8),rgba(255,255,255,.15));margin-top:15px;}
+.menu-section{margin-bottom:22px;}
+.menu-section-title{color:#ff7a18;font-size:22px;font-weight:700;margin-bottom:10px;}
+.menu-item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:start;padding:10px 0;border-bottom:1px dotted rgba(255,255,255,.12);color:#ececec;font-size:16px;line-height:1.45}
+.menu-item span:last-child{white-space:nowrap}
+.menu-note{color:#9f9f9f;font-size:14px;line-height:1.7;margin-top:auto;padding-top:8px}
+.menu-controls{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
+.menu-control-btn{background:#151515;color:#fff;border:1px solid rgba(255,122,24,.22);padding:12px 22px;border-radius:999px;font-family:'Outfit',sans-serif;cursor:pointer;transition:.3s}
+.menu-control-btn:hover{transform:translateY(-2px);border-color:#ff7a18;box-shadow:0 10px 25px rgba(255,122,24,.18)}
+.menu-control-btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+.menu-page-indicator{color:#d0d0d0;min-width:88px;text-align:center}
+.menu-close{position:absolute;top:16px;right:18px;width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#fff;cursor:pointer;font-size:20px;transition:.3s;z-index:6}
+.menu-close:hover{transform:rotate(90deg);border-color:#ff7a18;color:#ff7a18}
+/* ORDER SYSTEM */
+.order-modal{position:fixed;inset:0;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;padding:24px;z-index:6000;opacity:0;pointer-events:none;transition:opacity .25s ease}
+.order-modal.active{opacity:1;pointer-events:auto}
+.order-flow{width:min(1280px,96vw);height:min(90vh,900px);background:#050505;border:1px solid rgba(255,122,24,.12);border-radius:24px;box-shadow:0 16px 30px rgba(0,0,0,.28);position:relative;overflow:hidden}
+.order-close{position:absolute;top:16px;right:18px;width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#fff;cursor:pointer;font-size:20px;transition:.3s;z-index:10}
+.order-close:hover{transform:rotate(90deg);border-color:#ff7a18;color:#ff7a18}
+.order-screen{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .2s ease,visibility .2s ease}
+.order-screen.active{opacity:1;visibility:visible}
+.order-shell{height:100%;display:flex;flex-direction:column;padding:28px 28px 22px}
+.order-top{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:16px}
+.order-brand{color:#ff7a18;font-size:62px;font-weight:700;line-height:1}
+.order-subtitle{color:#d2d2d2;font-size:14px;letter-spacing:3px;text-transform:uppercase}
+.order-header-line{height:1px;background:linear-gradient(90deg,rgba(255,122,24,.85),rgba(255,255,255,.12));margin-bottom:18px}
+.order-grid{flex:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;overflow-y:auto;overflow-x:hidden;padding-right:4px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.order-grid::-webkit-scrollbar{width:0;height:0}
+.order-grid{scrollbar-width:none}
+.order-modal{will-change:opacity;}
+.order-category{background:#0d0d0d;border:1px solid rgba(255,255,255,.05);border-radius:18px;padding:18px}
+.order-item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;padding:10px 0;border-bottom:1px dotted rgba(255,255,255,.1)}
+.order-item:last-child{border-bottom:none}
+.order-item-main{min-width:0}
+.order-item-name{color:#f0f0f0;font-size:15px;line-height:1.4}
+.order-item-price{color:#9f9f9f;font-size:14px;margin-top:4px}
+.order-item.active{background:rgba(255,122,24,.08);border-radius:10px;padding:10px 8px;transition:.25s}
+.order-item.active .order-item-name{color:#fff}
+.order-item.active .order-item-price{color:#ff7a18}
+.order-category{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:18px;contain:layout paint;}
+.qty-box{display:flex;align-items:center;gap:10px}
+.qty-btn{width:30px;height:30px;min-width:30px;min-height:30px;aspect-ratio:1/1;border-radius:50%;border:1px solid rgba(255,122,24,.28);background:#151515;color:#fff;cursor:pointer;font-size:16px;line-height:1;display:flex;align-items:center;justify-content:center;transition:.25s;}
+.qty-btn:hover{border-color:#ff7a18;box-shadow:0 0 12px rgba(255,122,24,.18)}
+.qty-value{min-width:18px;text-align:center;color:#fff;font-size:15px}
+.order-bottom{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:16px;margin-top:14px;border-top:1px solid rgba(255,255,255,.08)}
+.order-summary{color:#d0d0d0;line-height:1.7}
+.order-summary strong{color:#ff7a18}
+.order-next-btn,.order-back-btn,.order-send-btn{background:#cc5f0f;border:none;padding:14px 28px;border-radius:999px;color:#fff;cursor:pointer;font-weight:600;letter-spacing:.4px;transition:all .35s ease;box-shadow:0 10px 25px rgba(255,122,24,.25)}
+.order-next-btn:hover,.order-back-btn:hover,.order-send-btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 15px 35px rgba(255,122,24,.45)}
+.order-next-btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+.order-form-wrap{flex:1;display:flex;align-items:center;justify-content:center}
+.order-form-card{width:min(520px,100%);background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:22px;padding:26px}
+.order-form-card h3{color:#ff7a18;font-size:28px;margin-bottom:10px}
+.order-form-card p{color:#b5b5b5;line-height:1.7;margin-bottom:18px}
+.order-form-card input,.order-form-card textarea{width:100%;margin:10px 0;padding:14px;background:#151515;border:1px solid rgba(255,122,24,.16);color:#fff;border-radius:12px;font-family:'Outfit','Noto Sans',sans-serif;transition:.3s}
+.order-form-card input:focus,.order-form-card textarea:focus{outline:none;border-color:#ff7a18;box-shadow:0 0 10px rgba(255,122,24,.22)}
+.order-form-card textarea{min-height:110px;resize:vertical}
+.order-form-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:12px}
+.order-form-msg{color:#ff7a18;font-size:14px;min-height:20px}
+.order-clear-btn{background:transparent;border:1px solid rgba(255,255,255,.2);padding:12px 24px;border-radius:999px;color:#ccc;cursor:pointer;transition:.3s;}
+.order-clear-btn:hover{color:#ff7a18;border-color:#ff7a18;box-shadow:0 0 12px rgba(255,122,24,.2);}
+.order-clear-btn{opacity:.7}
+.order-clear-btn:hover{opacity:1}
+.order-actions{display:flex;gap:12px;align-items:center;}
+
+.whatsapp{transition: all 0.3s ease;}
+nav a.active{color:#fff}
+nav a.active::after{width:100%}
+body{opacity:0;transition:opacity .6s ease}
+body.loaded{opacity:1}
+button:active{transform:scale(0.96);}
+
+@media(max-width:1100px){.order-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.order-brand{font-size:48px}}
+@media(max-width:700px){.order-modal{padding:10px}.order-flow{width:100%;height:92vh;border-radius:18px}.order-shell{padding:20px 16px 18px}.order-grid{grid-template-columns:1fr}.order-brand{font-size:38px}.order-subtitle{font-size:12px;letter-spacing:2px}.order-bottom{align-items:flex-start}.order-next-btn,.order-back-btn,.order-send-btn{width:100%}.order-form-actions{flex-direction:column}}
+@media(max-width:900px){.menu-book-stage{height:min(620px,82vh)}.menu-sheet{grid-template-columns:1fr;gap:18px;overflow:auto}.menu-half.left,.menu-half.right{padding:0}.menu-cover h3{font-size:62px;letter-spacing:6px}.menu-cover p{font-size:16px;letter-spacing:3px}.menu-brand{font-size:42px}}
+@media(max-width:900px){.menu-card,.gallery img,.booking-card,.map-card,.contact-card,.about-img img{transform:translateY(0) scale(1);transition:transform .55s ease,box-shadow .55s ease;will-change:transform}.menu-card.scroll-hover,.gallery img.scroll-hover,.booking-card.scroll-hover,.map-card.scroll-hover,.contact-card.scroll-hover,.about-img img.scroll-hover{transform:translateY(-10px) scale(1.03);box-shadow:0 20px 40px rgba(255,122,24,.22)}}
+@media(max-width:900px){:root{--navH:120px}header{padding:12px 4% 10px;gap:8px}.logo{font-size:22px}nav{gap:8px 12px}nav a{font-size:13px}}
+@media(max-width:900px){.section{width:92%;margin:72px auto}.section h2{margin-bottom:16px;font-size:26px}.menu-wrap{gap:85px}.about-box{gap:20px}.booking-wrap{gap:20px}}
+@media(max-width:900px){nav a,.menu-control-btn,.qty-btn,.order-clear-btn,.order-next-btn,.order-back-btn,.order-send-btn{min-height:44px;display:flex;align-items:center;justify-content:center}}
+@media(max-width:900px){.card:hover,.menu-card:hover,.gallery img:hover,.booking-card:hover,.map-card:hover{transform:none;box-shadow:none}}
+@media(max-width:900px){.about-text,.contact-card p{font-size:14.5px;line-height:1.75}}
+@media(max-width:900px){.gallery img{height:220px}}
+@media(max-width:900px){.menu-card{padding:95px 18px 26px}.menu-card h3{font-size:20px}.menu-desc{font-size:13.5px;line-height:1.65}}
+@media(max-width:700px){.menu-page,.order-flow,.order-form-card,.order-category{border-radius:16px}.menu-sheet{padding:18px 16px 16px}.order-shell{padding:16px 14px}}
+@media(max-width:900px){.cursor{display:none}}
+@media(max-width:900px){:root{--navH:90px}header{grid-template-columns:1fr;padding:10px 4% 8px;gap:6px;height:auto;}.logo{font-size:20px;}nav{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:12px;justify-content:flex-start;padding-bottom:4px;}nav::-webkit-scrollbar{display:none}nav a{font-size:13px;white-space:nowrap;padding:4px 2px;}.nav-btn{display:none;}}
+@media(max-width:900px){header{backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.06);}}
+@media(max-width:900px){.qty-btn{width:36px;height:36px;font-size:18px}}
+@media(max-width:900px){.menu-sheet::after{display:none;}}
+@media(max-width:900px){footer div:nth-child(2){display:flex;justify-content:space-between;align-items:center;}footer div:nth-child(2) a{margin:0;font-size:14px;flex:1;text-align:center;}}
+
+</style>
+</head>
+
+<body>
+  <div class="cursor" id="cursor"></div>
+
+  <header>
+    <div class="logo">Velora</div>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#menu">Menu</a>
+      <a href="#about">About</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#booking">Booking</a>
+    </nav>
+    <a href="#" class="nav-btn" id="open-order">Order Now</a>
+  </header>
+
+  <section class="hero">
+    <div>
+      <h1>Feel the <span>Luxury</span></h1>
+      <p>Not just dining. A memory crafted forever.</p>
+      <button class="btn magnetic-btn" type="button" data-scroll="#booking">Reserve Table</button>
+    </div>
+  </section>
+
+  <section class="section" id="menu">
+    <h2>Our Most Loved</h2>
+
+    <div class="menu-wrap">
+      <div class="menu-card">
+        <div class="menu-img"><img src="images/pasta.webp" alt="Truffle Pasta" loading="lazy"></div>
+        <h3>Truffle Pasta</h3>
+        <p class="menu-desc">A rich and creamy pasta infused with earthy truffle flavors, finished with parmesan and herbs.</p>
+      </div>
+
+      <div class="menu-card">
+        <div class="menu-img"><img src="images/risotto.webp" alt="Sea Urchin Risotto" loading="lazy"></div>
+        <h3>Sea Urchin Risotto</h3>
+        <p class="menu-desc">Silky risotto cooked to perfection with fresh sea urchin, delivering a deep ocean-inspired taste.</p>
+      </div>
+
+      <div class="menu-card">
+        <div class="menu-img"><img src="images/cake.webp" alt="Matcha Lava Cake" loading="lazy"></div>
+        <h3>Matcha Lava Cake</h3>
+        <p class="menu-desc">A delicate dessert with a molten matcha center, balancing sweetness with a subtle bitter note.</p>
+      </div>
+    </div>
+
+    <div class="explore-wrap">
+      <button type="button" class="btn explore-btn" id="open-menu-book">Explore Full Menu</button>
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <h2>About Velora</h2>
+    <div class="about-box">
+      <div class="about-img"><img src="images/about.webp" alt="About Velora" loading="lazy"></div>
+      <div class="about-text">
+        <p>Velora is a destination where culinary artistry meets refined luxury. Every detail is designed to elevate your senses.</p>
+        <p>Our chefs craft each dish with precision, blending global inspiration with premium ingredients to deliver unforgettable flavors.</p>
+        <p>From intimate dinners to grand celebrations, Velora creates moments that feel personal, elegant, and timeless.</p>
+        <p>We believe dining is more than food — it’s an emotional journey, a memory, a story you carry with you.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="gallery">
+    <h2>A Glimpse of Velora</h2>
+    <div class="gallery">
+        <img src="images/gallery1.webp" alt="Gallery image 1" loading="lazy">
+        <img src="images/gallery2.webp" alt="Gallery image 2" loading="lazy">
+        <img src="images/gallery3.webp" alt="Gallery image 3" loading="lazy">
+        <img src="images/gallery4.webp" alt="Gallery image 4" loading="lazy">
+    </div>
+  </section>
+
+  <section class="section" id="booking">
+    <div class="booking-wrap">
+
+      <!-- LEFT COLUMN: Booking Form -->
+      <div class="booking-column">
+        <h2>Reserve Experience</h2>
+        <div class="booking-card">
+          <input id="name" placeholder="Name" autocomplete="name" />
+          <input id="email" type="email" placeholder="Email" autocomplete="email" />
+          <input id="date" type="date" />
+          <input id="time" type="time" />
+          <input id="guests" type="number" min="1" step="1" placeholder="Guests" inputmode="numeric" />
+
+          <div id="booking-action-wrap">
+            <button type="button" id="book-btn">Book Table</button>
+          
+            <div id="booking-options" style="display:none;">
+              <button type="button" class="booking-split-btn" id="booking-whatsapp-btn">WhatsApp</button>
+              <button type="button" class="booking-split-btn" id="booking-email-btn">Email</button>
+            </div>
+          </div>
+          
+          <p id="msg"></p>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: Contact Card -->
+      <div class="contact-column">
+        <h2>Contact Us</h2>
+        <div class="map-card contact-card">
+          <p>Welcome to Velora — where dining transcends into a crafted experience of luxury and refinement. Every moment, every detail, is designed to delight your senses.</p>
+          <p>Whether it’s a special celebration, an intimate dinner, or a private event, we craft every experience with elegance, precision, and a touch of timeless luxury.</p>
+          <p>Feel free to reach out for any inquiries, reservations, or special arrangements. We take pride in creating extraordinary moments.</p>
+
+          <p>
+            Email:
+            <a
+              href="https://mail.google.com/mail/?view=cm&to=demo@gmail.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="contact-link"
+            >
+              demo@gmail.com
+            </a>
+          </p>
+
+          <p>
+            Phone:
+            <span class="contact-link" id="phone-copy" style="cursor:pointer;">
+              +91 9876543210
+            </span>
+          </p>
+
+          <p>
+            Address: 123 Luxury Street, Marine Drive, South Mumbai, Maharashtra, India — A prime location overlooking the bay, where the gentle sea breeze meets the city's vibrant energy.
+            <a
+              href="https://www.google.com/maps/search/?api=1&query=123+Luxury+Street,+Marine+Drive,+South+Mumbai,+Maharashtra,+India"
+              target="_blank"
+              rel="noopener noreferrer"
+              style="color:#ff7a18; text-decoration:none;"
+            >
+              View on Map
+            </a>
+            <br>
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  
+  
+  <div class="menu-modal" id="menu-modal" aria-hidden="true">
+    <div class="menu-book-wrap">
+      <div class="menu-book-stage" id="menu-book-stage">
+        <button type="button" class="menu-close" id="close-menu-book" aria-label="Close menu">×</button>
+
+        <div class="menu-page active">
+          <div class="menu-page-content">
+            <div class="menu-cover">
+              <div class="menu-cover-inner">
+                <h3>MENU</h3>
+                <p>Velora Fine Dining<br>Experience</p>
+              
+                <button type="button" class="btn" id="menu-order-btn" style="margin-top:25px;font-size:15px;padding:10px 28px;">
+                  Order Now
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-page">
+          <div class="menu-page-content">
+            <div class="menu-sheet">
+                <div class="menu-top-header">
+                  <div class="menu-brand">Velora</div>
+                  <div class="menu-header-line"></div>
+                </div>
+              <div class="menu-half left">                
+                <div class="menu-section">
+                  <div class="menu-section-title">Starters</div>
+                  <div class="menu-item"><span>Truffle Soup</span><span>₹320</span></div>
+                  <div class="menu-item"><span>Garlic Bread</span><span>₹180</span></div>
+                  <div class="menu-item"><span>Paneer Tikka</span><span>₹340</span></div>
+                  <div class="menu-item"><span>Chicken Bites</span><span>₹360</span></div>
+                  <div class="menu-item"><span>Nachos</span><span>₹220</span></div>
+                  <div class="menu-item"><span>Smoked Corn Cups</span><span>₹260</span></div>
+                  <div class="menu-item"><span>Crispy Lotus Stem</span><span>₹290</span></div>
+                  <div class="menu-item"><span>Stuffed Mushrooms</span><span>₹310</span></div>
+                  <div class="menu-item"><span>Cheese Balls</span><span>₹270</span></div>
+                </div>
+              </div>
+
+              <div class="menu-half right">
+                <div class="menu-section">
+                  <div class="menu-section-title">Main Course</div>
+                  <div class="menu-item"><span>Truffle Pasta</span><span>₹480</span></div>
+                  <div class="menu-item"><span>Seafood Risotto</span><span>₹520</span></div>
+                  <div class="menu-item"><span>Grilled Chicken</span><span>₹540</span></div>
+                  <div class="menu-item"><span>Paneer Butter Masala</span><span>₹420</span></div>
+                  <div class="menu-item"><span>Veg Biryani</span><span>₹360</span></div>
+                  <div class="menu-item"><span>Herb Rice Bowl</span><span>₹390</span></div>
+                  <div class="menu-item"><span>Roasted Veg Platter</span><span>₹440</span></div>
+                  <div class="menu-item"><span>Lemon Butter Fish</span><span>₹560</span></div>
+                  <div class="menu-item"><span>Paneer Steak</span><span>₹500</span></div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-page">
+          <div class="menu-page-content">
+            <div class="menu-sheet">
+                <div class="menu-top-header">
+                  <div class="menu-brand">Velora</div>
+                  <div class="menu-header-line"></div>
+                </div>
+
+                <div class="menu-half left">
+                  <div class="menu-section">
+                    <div class="menu-section-title">Main Course</div>
+                    <div class="menu-item"><span>Truffle Pasta</span><span>₹480</span></div>
+                    <div class="menu-item"><span>Seafood Risotto</span><span>₹520</span></div>
+                    <div class="menu-item"><span>Grilled Chicken</span><span>₹540</span></div>
+                    <div class="menu-item"><span>Paneer Butter Masala</span><span>₹420</span></div>
+                    <div class="menu-item"><span>Veg Biryani</span><span>₹360</span></div>
+                    <div class="menu-item"><span>Herb Rice Bowl</span><span>₹390</span></div>
+                    <div class="menu-item"><span>Roasted Veg Platter</span><span>₹440</span></div>
+                    <div class="menu-item"><span>Lemon Butter Fish</span><span>₹560</span></div>
+                    <div class="menu-item"><span>Smoked Cottage Steak</span><span>₹510</span></div>
+                  </div>
+                </div>
+
+              <div class="menu-half right">
+                <div class="menu-section">
+                  <div class="menu-section-title">Starters</div>
+                  <div class="menu-item"><span>Truffle Soup</span><span>₹320</span></div>
+                  <div class="menu-item"><span>Garlic Bread</span><span>₹180</span></div>
+                  <div class="menu-item"><span>Paneer Tikka</span><span>₹340</span></div>
+                  <div class="menu-item"><span>Chicken Bites</span><span>₹360</span></div>
+                  <div class="menu-item"><span>Nachos</span><span>₹220</span></div>
+                  <div class="menu-item"><span>Smoked Corn Cups</span><span>₹260</span></div>
+                  <div class="menu-item"><span>Crispy Lotus Stem</span><span>₹290</span></div>
+                  <div class="menu-item"><span>Stuffed Mushrooms</span><span>₹310</span></div>
+                  <div class="menu-item"><span>Cheese Balls</span><span>₹270</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-page">
+          <div class="menu-page-content">
+            <div class="menu-sheet">
+                <div class="menu-top-header">
+                  <div class="menu-brand">Velora</div>
+                  <div class="menu-header-line"></div>
+                </div>           
+              <div class="menu-half left">
+                <div class="menu-section">
+                  <div class="menu-section-title">Chef Specials</div>
+                  <div class="menu-item"><span>Classic Tasting Platter</span><span>₹690</span></div>
+                  <div class="menu-item"><span>Vegetarian Sampler</span><span>₹620</span></div>
+                  <div class="menu-item"><span>Signature Velora Platter</span><span>₹780</span></div>
+                  <div class="menu-item"><span>Chef’s Fusion Bowl</span><span>₹540</span></div>
+                  <div class="menu-item"><span>Grilled Herb Medley</span><span>₹460</span></div>
+                  <div class="menu-item"><span>Spiced Cottage Delight</span><span>₹420</span></div>
+                  <div class="menu-item"><span>Golden Crunch Basket</span><span>₹390</span></div>
+                  <div class="menu-item"><span>Luxury Starter Duo</span><span>₹510</span></div>
+                  <div class="menu-item"><span>House Special Skewers</span><span>₹470</span></div>
+                </div>                
+              </div>
+
+              <div class="menu-half right">
+                <div class="menu-section">
+                  <div class="menu-section-title">Add-ons</div>
+                  <div class="menu-item"><span>Garlic Bread Basket</span><span>₹120</span></div>
+                  <div class="menu-item"><span>Sauteed Vegetables</span><span>₹150</span></div>
+                  <div class="menu-item"><span>Extra Cheese</span><span>₹80</span></div>
+                  <div class="menu-item"><span>Herb Butter</span><span>₹60</span></div>
+                  <div class="menu-item"><span>Extra Sauce</span><span>₹60</span></div>
+                  <div class="menu-item"><span>House Salad</span><span>₹170</span></div>
+                  <div class="menu-item"><span>Grilled Paneer Cubes</span><span>₹140</span></div>
+                  <div class="menu-item"><span>Chicken Add-on</span><span>₹180</span></div>
+                  <div class="menu-item"><span>Rice Portion</span><span>₹110</span></div>
+                </div>                
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-page">
+          <div class="menu-page-content">
+            <div class="menu-sheet">
+                <div class="menu-top-header">
+                  <div class="menu-brand">Velora</div>
+                  <div class="menu-header-line"></div>
+                </div>
+              <div class="menu-half left">
+
+                <div class="menu-section">
+                  <div class="menu-section-title">Desserts</div>
+                  <div class="menu-item"><span>Matcha Lava Cake</span><span>₹280</span></div>
+                  <div class="menu-item"><span>Chocolate Brownie</span><span>₹240</span></div>
+                  <div class="menu-item"><span>Tiramisu</span><span>₹300</span></div>
+                  <div class="menu-item"><span>Classic Cheesecake</span><span>₹260</span></div>
+                  <div class="menu-item"><span>Caramel Pudding</span><span>₹230</span></div>
+                  <div class="menu-item"><span>Hazelnut Mousse</span><span>₹290</span></div>
+                  <div class="menu-item"><span>Ice Cream Sundae</span><span>₹210</span></div>
+                  <div class="menu-item"><span>Molten Chocolate Cup</span><span>₹270</span></div>
+                  <div class="menu-item"><span>Berry Delight Bowl</span><span>₹250</span></div>
+                </div>
+              </div>
+
+              <div class="menu-half right">
+                <div class="menu-section">
+                  <div class="menu-section-title">Beverages</div>
+                  <div class="menu-item"><span>Cold Coffee</span><span>₹180</span></div>
+                  <div class="menu-item"><span>Cappuccino</span><span>₹160</span></div>
+                  <div class="menu-item"><span>Mojito</span><span>₹200</span></div>
+                  <div class="menu-item"><span>Milkshake</span><span>₹220</span></div>
+                  <div class="menu-item"><span>Smoothies</span><span>₹240</span></div>
+                  <div class="menu-item"><span>Iced Latte</span><span>₹210</span></div>
+                  <div class="menu-item"><span>Fresh Lime Soda</span><span>₹140</span></div>
+                  <div class="menu-item"><span>Hot Chocolate</span><span>₹190</span></div>
+                  <div class="menu-item"><span>Green Tea</span><span>₹120</span></div>
+                </div>                
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="menu-controls">
+        <button type="button" class="menu-control-btn" id="menu-prev">Previous</button>
+        <div class="menu-page-indicator" id="menu-page-indicator">Page 1 / 5</div>
+        <button type="button" class="menu-control-btn" id="menu-next">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" class="whatsapp">Chat</a>
+
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const doc = document;
+      const root = document.documentElement;
+      const body = document.body;
+
+      const cursor = doc.getElementById('cursor');
+      const phoneEl = doc.getElementById('phone-copy');
+      const footerPhone = doc.getElementById('footer-phone');
+      const magneticBtn = doc.querySelector('.magnetic-btn');
+      const sections = Array.from(doc.querySelectorAll('section[id]'));
+      const navLinks = Array.from(doc.querySelectorAll('nav a[href^="#"]'));
+
+      const dateInput = doc.getElementById('date');
+      const timeInput = doc.getElementById('time');
+      const nameInput = doc.getElementById('name');
+      const emailInput = doc.getElementById('email');
+      const guestsInput = doc.getElementById('guests');
+      const bookingMessage = doc.getElementById('msg');
+      const bookBtn = doc.getElementById('book-btn');
+      const bookingOptions = doc.getElementById('booking-options');
+      const bookingWhatsAppBtn = doc.getElementById('booking-whatsapp-btn');
+      const bookingEmailBtn = doc.getElementById('booking-email-btn');
+
+      const openMenuBook = doc.getElementById('open-menu-book');
+      const menuModal = doc.getElementById('menu-modal');
+      const closeMenuBook = doc.getElementById('close-menu-book');
+      const menuPrev = doc.getElementById('menu-prev');
+      const menuNext = doc.getElementById('menu-next');
+      const menuIndicator = doc.getElementById('menu-page-indicator');
+      const menuPages = Array.from(doc.querySelectorAll('.menu-book-stage .menu-page'));
+      const menuOrderBtn = doc.getElementById('menu-order-btn');
+
+      const orderOpenBtn = doc.getElementById('open-order');
+      const orderModal = doc.getElementById('order-modal');
+      const orderCloseBtn = doc.getElementById('close-order');
+      const orderScreenMenu = doc.getElementById('order-screen-menu');
+      const orderScreenDetails = doc.getElementById('order-screen-details');
+      const orderNextBtn = doc.getElementById('order-next');
+      const orderBackBtn = doc.getElementById('order-back');
+      const orderSendBtn = doc.getElementById('order-send');
+      const orderClearBtn = doc.getElementById('order-clear');
+      const orderSummary = doc.getElementById('order-summary');
+      const orderFormMsg = doc.getElementById('order-form-msg');
+      const orderCustomerName = doc.getElementById('order-customer-name');
+      const orderCustomerPhone = doc.getElementById('order-customer-phone');
+      const orderCustomerAddress = doc.getElementById('order-customer-address');
+      const orderItems = Array.from(doc.querySelectorAll('#order-modal .order-item'));
+
+      let currentMenuPage = 0;
+      let navLock = false;
+      let navLockTimer;
+
+      function getScrollOffset() {
+        return parseInt(getComputedStyle(root).getPropertyValue('--navH'), 10) || 80;
+      }
+
+      function smoothScrollToTarget(selector) {
+        if (selector === '#') {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          return;
+        }
+
+        if (!selector || !selector.startsWith('#')) return;
+
+        const target = doc.querySelector(selector);
+        if (!target) return;
+
+        window.scrollTo({
+          top: target.offsetTop - getScrollOffset(),
+          behavior: 'smooth'
+        });
+      }
+
+      function showStatusMessage(element, text) {
+        if (element) element.innerText = text;
+      }
+
+      function copyPhoneNumber(element) {
+        if (!element) return;
+
+        element.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText(element.innerText.trim());
+            alert(`Phone number ${element.innerText.trim()} copied!`);
+          } catch (error) {
+            alert('Unable to copy phone number');
+          }
+        });
+      }
+
+      function getBookingDetails() {
+        const name = nameInput?.value.trim() || '';
+        const email = emailInput?.value.trim() || '';
+        const date = dateInput?.value || '';
+        const time = timeInput?.value || '';
+        const guests = guestsInput?.value.trim() || '';
+
+        showStatusMessage(bookingMessage, '');
+
+        if (!name || !email || !date || !time || !guests) {
+          showStatusMessage(bookingMessage, 'Please fill all fields');
+          return null;
+        }
+
+        const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        if (!emailValid) {
+          showStatusMessage(bookingMessage, 'Enter a valid email');
+          return null;
+        }
+
+        const guestCount = Number(guests);
+        if (!Number.isInteger(guestCount) || guestCount < 1) {
+          showStatusMessage(bookingMessage, 'Enter valid guests');
+          return null;
+        }
+
+        const selected = new Date(`${date}T${time}`);
+        const now = new Date();
+        if (Number.isNaN(selected.getTime()) || selected < now) {
+          showStatusMessage(bookingMessage, 'Select a valid future time');
+          return null;
+        }
+
+        return { name, email, date, time, guests };
+      }
+
+      function buildBookingMessage(data) {
+        return `✨ Velora Table Reservation ✨
+
+Dear Velora Team,
+
+I would love to reserve a table for an exquisite dining experience at Velora.
+
+Here are my details:
+
+Name      : ${data.name}
+Email     : ${data.email}
+Date      : ${data.date}
+Time      : ${data.time}
+Guests    : ${data.guests}
+
+Looking forward to an unforgettable culinary experience!
+
+Warm regards,
+${data.name}`;
+      }
+
+      function showBookingOptions() {
+        const data = getBookingDetails();
+        if (!data || !bookBtn || !bookingOptions) return;
+
+        bookBtn.style.display = 'none';
+        bookingOptions.style.display = 'grid';
+        showStatusMessage(bookingMessage, 'Choose how you want to send your reservation');
+      }
+
+      function sendBookingWhatsApp() {
+        const data = getBookingDetails();
+        if (!data) return;
+
+        const phone = '919876543210';
+        const message = buildBookingMessage(data);
+        const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
+        window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+        showStatusMessage(bookingMessage, 'WhatsApp opened. Please send the reservation message to confirm.');
+      }
+
+      function sendBookingEmail() {
+        const data = getBookingDetails();
+        if (!data) return;
+
+        const toEmail = 'demo@gmail.com';
+        const subject = encodeURIComponent('Table Booking Request');
+        const bodyText = encodeURIComponent(buildBookingMessage(data));
+        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(toEmail)}&su=${subject}&body=${bodyText}`;
+        const mailtoUrl = `mailto:${encodeURIComponent(toEmail)}?subject=${subject}&body=${bodyText}`;
+        const newWindow = window.open(gmailUrl, '_blank', 'noopener,noreferrer');
+
+        if (!newWindow) {
+          window.location.href = mailtoUrl;
+        }
+
+        showStatusMessage(bookingMessage, 'Email opened. Please send it to confirm your reservation.');
+      }
+
+      function getLocalDateString() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      }
+
+      function updateTimeLimits() {
+        if (!dateInput || !timeInput) return;
+
+        const selectedDate = dateInput.value;
+        const today = getLocalDateString();
+        const now = new Date();
+
+        if (selectedDate === today) {
+          const hours = String(now.getHours()).padStart(2, '0');
+          const minutes = String(now.getMinutes()).padStart(2, '0');
+          timeInput.min = `${hours}:${minutes}`;
+          timeInput.max = '23:59';
+
+          if (timeInput.value && timeInput.value < timeInput.min) {
+            timeInput.value = timeInput.min;
+          }
+        } else {
+          timeInput.min = '09:00';
+          timeInput.max = '23:00';
+
+          if (timeInput.value && timeInput.value > timeInput.max) {
+            timeInput.value = timeInput.max;
+          }
+        }
+      }
+
+      function renderMenuBook() {
+        menuPages.forEach((page, index) => {
+          page.classList.toggle('active', index === currentMenuPage);
+        });
+
+        if (menuIndicator) {
+          menuIndicator.innerText = `Page ${currentMenuPage + 1} / ${menuPages.length}`;
+        }
+        if (menuPrev) menuPrev.disabled = currentMenuPage === 0;
+        if (menuNext) menuNext.disabled = currentMenuPage === menuPages.length - 1;
+      }
+
+      function openMenuModal() {
+        if (!menuModal) return;
+        currentMenuPage = 0;
+        renderMenuBook();
+        menuModal.classList.add('active');
+        menuModal.setAttribute('aria-hidden', 'false');
+        body.style.overflow = 'hidden';
+      }
+
+      function closeMenuModal() {
+        if (!menuModal) return;
+        menuModal.classList.remove('active');
+        menuModal.setAttribute('aria-hidden', 'true');
+        body.style.overflow = '';
+      }
+
+      function nextMenuPage() {
+        if (currentMenuPage < menuPages.length - 1) {
+          currentMenuPage += 1;
+          renderMenuBook();
+        }
+      }
+
+      function prevMenuPage() {
+        if (currentMenuPage > 0) {
+          currentMenuPage -= 1;
+          renderMenuBook();
+        }
+      }
+
+      function showOrderMenuScreen() {
+        if (orderScreenMenu) orderScreenMenu.classList.add('active');
+        if (orderScreenDetails) orderScreenDetails.classList.remove('active');
+      }
+
+      function showOrderDetailsScreen() {
+        if (orderScreenMenu) orderScreenMenu.classList.remove('active');
+        if (orderScreenDetails) orderScreenDetails.classList.add('active');
+      }
+
+      function openOrderModal() {
+        if (!orderModal) return;
+        orderModal.classList.add('active');
+        orderModal.setAttribute('aria-hidden', 'false');
+        body.style.overflow = 'hidden';
+        showOrderMenuScreen();
+      }
+
+      function closeOrderModal() {
+        if (!orderModal) return;
+        orderModal.classList.remove('active');
+        orderModal.setAttribute('aria-hidden', 'true');
+        body.style.overflow = '';
+      }
+
+      function getSelectedOrderItems() {
+        return orderItems
+          .map((item) => {
+            const qty = Number(item.dataset.qty || 0);
+            const name = item.dataset.name || '';
+            const price = Number(item.dataset.price || 0);
+            return { name, price, qty, total: price * qty };
+          })
+          .filter((item) => item.qty > 0);
+      }
+
+      function updateOrderSummary() {
+        const selected = getSelectedOrderItems();
+        const totalItems = selected.reduce((sum, item) => sum + item.qty, 0);
+        const totalPrice = selected.reduce((sum, item) => sum + item.total, 0);
+
+        if (orderSummary) {
+          orderSummary.innerHTML = `
+            <div><strong>Selected Items:</strong> ${totalItems}</div>
+            <div><strong>Total:</strong> ₹${totalPrice}</div>
+          `;
+        }
+
+        if (orderNextBtn) {
+          orderNextBtn.disabled = selected.length === 0;
+        }
+      }
+
+      function buildWhatsAppOrderMessage() {
+        const name = orderCustomerName?.value.trim() || '';
+        const phone = orderCustomerPhone?.value.trim() || '';
+        const address = orderCustomerAddress?.value.trim() || '';
+        const selected = getSelectedOrderItems();
+
+        if (!name || !phone || !address) {
+          showStatusMessage(orderFormMsg, 'Please fill name, phone number, and address.');
+          return null;
+        }
+
+        if (!selected.length) {
+          showStatusMessage(orderFormMsg, 'Please select at least one item.');
+          return null;
+        }
+
+        const totalPrice = selected.reduce((sum, item) => sum + item.total, 0);
+        const itemsText = selected
+          .map((item, index) => `${index + 1}. ${item.name}\n   Qty: ${item.qty} × ₹${item.price} = ₹${item.total}`)
+          .join('\n\n');
+
+        return `✨ Velora Order Request ✨
+
+Customer Details
+Name: ${name}
+Phone: ${phone}
+Address: ${address}
+
+Ordered Items
+${itemsText}
+
+Total: ₹${totalPrice}
+
+Please confirm this order.`;
+      }
+
+      function setActiveNav(target) {
+        navLinks.forEach((link) => {
+          link.classList.remove('active');
+          const href = link.getAttribute('href');
+          if ((target === 'home' && href === '#') || href === `#${target}`) {
+            link.classList.add('active');
+          }
+        });
+      }
+
+      function updateActiveNavOnScroll() {
+        if (navLock) return;
+
+        const scrollYPos = window.scrollY;
+        const scrollPoint = scrollYPos + window.innerHeight * 0.35;
+
+        if (scrollYPos < 120) {
+          setActiveNav('home');
+          return;
+        }
+
+        let current = '';
+        sections.forEach((section) => {
+          const top = section.offsetTop;
+          const bottom = top + section.offsetHeight;
+          if (scrollPoint >= top && scrollPoint < bottom) {
+            current = section.id;
+          }
+        });
+
+        if (current) setActiveNav(current);
+      }
+
+      if (cursor) {
+        doc.addEventListener('mousemove', (event) => {
+          cursor.style.left = `${event.clientX}px`;
+          cursor.style.top = `${event.clientY}px`;
+        });
+      }
+
+      if (window.gsap && window.ScrollTrigger) {
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.from('.hero h1', { y: 80, opacity: 0, duration: 1 });
+      }
+
+      doc.querySelectorAll('a[href^="#"]').forEach((link) => {
+        link.addEventListener('click', function handleAnchorClick(event) {
+          const target = this.getAttribute('href');
+          if (!target) return;
+          event.preventDefault();
+          smoothScrollToTarget(target);
+        });
+      });
+
+      doc.querySelectorAll('[data-scroll]').forEach((button) => {
+        button.addEventListener('click', function handleScrollButton() {
+          smoothScrollToTarget(this.getAttribute('data-scroll'));
+        });
+      });
+
+      if (dateInput && timeInput) {
+        dateInput.min = getLocalDateString();
+        updateTimeLimits();
+        dateInput.addEventListener('change', updateTimeLimits);
+        timeInput.addEventListener('input', () => {
+          if (timeInput.min && timeInput.value < timeInput.min) timeInput.value = timeInput.min;
+          if (timeInput.max && timeInput.value > timeInput.max) timeInput.value = timeInput.max;
+        });
+      }
+
+      copyPhoneNumber(phoneEl);
+      copyPhoneNumber(footerPhone);
+
+      if (bookBtn) bookBtn.addEventListener('click', showBookingOptions);
+      if (bookingWhatsAppBtn) bookingWhatsAppBtn.addEventListener('click', sendBookingWhatsApp);
+      if (bookingEmailBtn) bookingEmailBtn.addEventListener('click', sendBookingEmail);
+
+      if (openMenuBook) openMenuBook.addEventListener('click', openMenuModal);
+      if (closeMenuBook) closeMenuBook.addEventListener('click', closeMenuModal);
+      if (menuNext) menuNext.addEventListener('click', nextMenuPage);
+      if (menuPrev) menuPrev.addEventListener('click', prevMenuPage);
+      if (menuModal) {
+        menuModal.addEventListener('click', (event) => {
+          if (event.target === menuModal) closeMenuModal();
+        });
+      }
+      renderMenuBook();
+
+      orderItems.forEach((item) => {
+        const minusBtn = item.querySelector('.minus');
+        const plusBtn = item.querySelector('.plus');
+        const qtyEl = item.querySelector('.qty-value');
+
+        item.dataset.qty = item.dataset.qty || '0';
+        if (qtyEl) qtyEl.textContent = item.dataset.qty;
+
+        const syncItemState = (qty) => {
+          item.dataset.qty = String(qty);
+          if (qtyEl) qtyEl.textContent = String(qty);
+          item.classList.toggle('active', qty > 0);
+          updateOrderSummary();
+        };
+
+        if (minusBtn) {
+          minusBtn.addEventListener('click', () => {
+            const qty = Math.max(0, Number(item.dataset.qty || 0) - 1);
+            syncItemState(qty);
+          });
+        }
+
+        if (plusBtn) {
+          plusBtn.addEventListener('click', () => {
+            const qty = Number(item.dataset.qty || 0) + 1;
+            syncItemState(qty);
+          });
+        }
+      });
+
+      if (orderOpenBtn) {
+        orderOpenBtn.addEventListener('click', (event) => {
+          event.preventDefault();
+          openOrderModal();
+        });
+      }
+
+      if (menuOrderBtn) {
+        menuOrderBtn.addEventListener('click', () => {
+          closeMenuModal();
+          openOrderModal();
+        });
+      }
+
+      if (orderCloseBtn) orderCloseBtn.addEventListener('click', closeOrderModal);
+      if (orderModal) {
+        orderModal.addEventListener('click', (event) => {
+          if (event.target === orderModal) closeOrderModal();
+        });
+      }
+      if (orderNextBtn) orderNextBtn.addEventListener('click', showOrderDetailsScreen);
+      if (orderBackBtn) {
+        orderBackBtn.addEventListener('click', () => {
+          showStatusMessage(orderFormMsg, '');
+          showOrderMenuScreen();
+        });
+      }
+      if (orderSendBtn) {
+        orderSendBtn.addEventListener('click', () => {
+          const message = buildWhatsAppOrderMessage();
+          if (!message) return;
+
+          showStatusMessage(orderFormMsg, '');
+          const whatsappNumber = '919876543210';
+          const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+          window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+        });
+      }
+      if (orderClearBtn) {
+        orderClearBtn.addEventListener('click', () => {
+          orderItems.forEach((item) => {
+            item.dataset.qty = '0';
+            const qtyEl = item.querySelector('.qty-value');
+            if (qtyEl) qtyEl.textContent = '0';
+            item.classList.remove('active');
+          });
+          updateOrderSummary();
+        });
+      }
+      updateOrderSummary();
+
+      if (magneticBtn) {
+        let targetX = 0;
+        let targetY = 0;
+        let currentX = 0;
+        let currentY = 0;
+        let isNear = false;
+
+        doc.addEventListener('mousemove', (event) => {
+          const rect = magneticBtn.getBoundingClientRect();
+          const centerX = rect.left + rect.width / 2;
+          const centerY = rect.top + rect.height / 2;
+          const distX = event.clientX - centerX;
+          const distY = event.clientY - centerY;
+          const maxDistance = 180;
+
+          if (Math.abs(distX) < maxDistance && Math.abs(distY) < maxDistance) {
+            isNear = true;
+            targetX = distX * 0.18;
+            targetY = distY * 0.18;
+          } else {
+            isNear = false;
+            targetX = 0;
+            targetY = 0;
+          }
+        });
+
+        const animateMagnet = () => {
+          currentX += (targetX - currentX) * 1;
+          currentY += (targetY - currentY) * 1;
+          magneticBtn.style.transform = `translate(${currentX}px, ${currentY}px) scale(${isNear ? 1.05 : 1})`;
+          requestAnimationFrame(animateMagnet);
+        };
+
+        animateMagnet();
+      }
+
+      if (window.innerWidth <= 900) {
+        const mobileScrollCards = doc.querySelectorAll('.menu-card, .gallery img, .booking-card, .map-card, .contact-card, .about-img img');
+
+        const mobileScrollObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            const card = entry.target;
+            if (entry.isIntersecting) {
+              clearTimeout(card.leaveTimer);
+              card.enterTimer = setTimeout(() => {
+                card.classList.add('scroll-hover');
+              }, 120);
+            } else {
+              clearTimeout(card.enterTimer);
+              card.leaveTimer = setTimeout(() => {
+                card.classList.remove('scroll-hover');
+              }, 60);
+            }
+          });
+        }, {
+          threshold: 0.45,
+          rootMargin: '0px 0px -8% 0px'
+        });
+
+        mobileScrollCards.forEach((card) => mobileScrollObserver.observe(card));
+      }
+
+      window.addEventListener('scroll', updateActiveNavOnScroll);
+      navLinks.forEach((link) => {
+        link.addEventListener('click', function handleNavState() {
+          clearTimeout(navLockTimer);
+          navLock = true;
+
+          const href = this.getAttribute('href');
+          setActiveNav(href === '#' ? 'home' : href.replace('#', ''));
+
+          navLockTimer = setTimeout(() => {
+            navLock = false;
+            updateActiveNavOnScroll();
+          }, 1000);
+        });
+      });
+
+      doc.addEventListener('keydown', (event) => {
+        if (menuModal?.classList.contains('active')) {
+          if (event.key === 'Escape') closeMenuModal();
+          if (event.key === 'ArrowRight') nextMenuPage();
+          if (event.key === 'ArrowLeft') prevMenuPage();
+        }
+
+        if (orderModal?.classList.contains('active') && event.key === 'Escape') {
+          closeOrderModal();
+        }
+      });
+
+      const footer = document.getElementById('footer');
+      const whatsappBtn = document.querySelector('.whatsapp');
+
+      if (footer && whatsappBtn) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                whatsappBtn.style.opacity = '0';
+                whatsappBtn.style.pointerEvents = 'none';
+                whatsappBtn.style.transform = 'translateY(20px)';
+              } else {
+                whatsappBtn.style.opacity = '1';
+                whatsappBtn.style.pointerEvents = 'auto';
+                whatsappBtn.style.transform = 'translateY(0)';
+             }
+            });
+          },
+          
+          {threshold: 0.1,rootMargin: "0px 0px -80px 0px"});
+
+       observer.observe(footer);
+      }
+
+      updateActiveNavOnScroll();
+      body.classList.add('loaded');
+      
+    });
+  </script>
+
+
+  <!-- ================== Footer Start ================== -->
+  <hr style="border:none; border-top:2px solid rgba(255,122,24,0.3); margin:0 5%;">
+
+  <footer id="footer" style="background:#0b0b0b; color:#aaa; padding:25px 5% 25px; font-family:'Outfit',sans-serif;">
+
+    <!-- TOP SECTION -->
+    <div style="text-align:center; margin-bottom:5px;">
+      <div class="logo" style="font-size:26px; color:#ff7a18; margin-bottom:15px;">Velora</div>
+  
+      <p style="margin-bottom:8px; line-height:1.6;">
+        123 Luxury Street, Marine Drive, South Mumbai, Maharashtra, India —  
+        A prime location overlooking the bay.
+      </p>
+  
+      <p style="margin-top:10px;">
+        <a href="https://mail.google.com/mail/?view=cm&to=demo@gmail.com" target="_blank" rel="noopener noreferrer" class="contact-link" style="color:#ff7a18;text-decoration:none;">
+          demo@gmail.com
+        </a> 
+        <span style="margin:0 8px; color:#555;">|</span>
+        <span class="contact-link" id="footer-phone" style="cursor:pointer;color:#ff7a18;">
+          +91 9876543210
+        </span>
+      </p>
+    </div>
+  
+    <!-- NAV LINKS -->
+    <div style="text-align:center; margin-top:8px; margin-bottom:12px;">
+      <a href="#" style="margin:0 14px;color:#ff7a18;text-decoration:none;">Home</a>
+      <a href="#menu" style="margin:0 14px;color:#ff7a18;text-decoration:none;">Menu</a>
+      <a href="#about" style="margin:0 14px;color:#ff7a18;text-decoration:none;">About</a>
+      <a href="#gallery" style="margin:0 14px;color:#ff7a18;text-decoration:none;">Gallery</a>
+      <a href="#booking" style="margin:0 14px;color:#ff7a18;text-decoration:none;">Booking</a>
+    </div>
+  
+    <!-- COPYRIGHT -->
+    <div style="text-align:center;font-size:14px;color:#555; margin-top:5px;">
+      &copy; 2026 Velora. All Rights Reserved.
+    </div>
+  
+  </footer>
+  <!-- ================== Footer End ================== -->
+
+
+
+  <!-- ORDER MODAL -->
+<div class="order-modal" id="order-modal" aria-hidden="true">
+  <div class="order-flow">
+    <button type="button" class="order-close" id="close-order" aria-label="Close order">×</button>
+
+    <!-- SCREEN 1 -->
+    <div class="order-screen active" id="order-screen-menu">
+      <div class="order-shell">
+        <div class="order-top">
+          <div>
+            <div class="order-brand">Velora</div>
+            <div class="order-subtitle">Curated Order Sheet</div>
+          </div>
+        </div>
+
+        <div class="order-header-line"></div>
+
+        <div class="order-grid">
+          <div class="order-category">
+            <h3>Starters</h3>
+
+            <div class="order-item" data-name="Truffle Soup" data-price="320">
+              <div class="order-item-main">
+                <div class="order-item-name">Truffle Soup</div>
+                <div class="order-item-price">₹320</div>
+              </div>
+              <div class="qty-box">
+                <button type="button" class="qty-btn minus">−</button>
+                <span class="qty-value">0</span>
+                <button type="button" class="qty-btn plus">+</button>
+              </div>
+            </div>
+
+            <div class="order-item" data-name="Garlic Bread" data-price="180">
+              <div class="order-item-main">
+                <div class="order-item-name">Garlic Bread</div>
+                <div class="order-item-price">₹180</div>
+              </div>
+              <div class="qty-box">
+                <button type="button" class="qty-btn minus">−</button>
+                <span class="qty-value">0</span>
+                <button type="button" class="qty-btn plus">+</button>
+              </div>
+            </div>
+
+            <div class="order-item" data-name="Paneer Tikka" data-price="340">
+              <div class="order-item-main">
+                <div class="order-item-name">Paneer Tikka</div>
+                <div class="order-item-price">₹340</div>
+              </div>
+              <div class="qty-box">
+                <button type="button" class="qty-btn minus">−</button>
+                <span class="qty-value">0</span>
+                <button type="button" class="qty-btn plus">+</button>
+              </div>
+            </div>
+
+            <div class="order-item" data-name="Chicken Bites" data-price="360">
+              <div class="order-item-main">
+                <div class="order-item-name">Chicken Bites</div>
+                <div class="order-item-price">₹360</div>
+              </div>
+              <div class="qty-box">
+                <button type="button" class="qty-btn minus">−</button>
+                <span class="qty-value">0</span>
+                <button type="button" class="qty-btn plus">+</button>
+              </div>
+            </div>
+
+            <div class="order-item" data-name="Nachos" data-price="220">
+              <div class="order-item-main">
+                <div class="order-item-name">Nachos</div>
+                <div class="order-item-price">₹220</div>
+              </div>
+              <div class="qty-box">
+                <button type="button" class="qty-btn minus">−</button>
+                <span class="qty-value">0</span>
+                <button type="button" class="qty-btn plus">+</button>
+              </div>
+            </div>
+
+            <div class="order-item" data-name="Smoked Corn Cups" data-price="260">
+              <div class="order-item-main">
+                <div class="order-item-name">Smoked Corn Cups</div>
+                <div class="order-item-price">₹260</div>
+              </div>
+              <div class="qty-box">
+                <button type="button" class="qty-btn minus">−</button>
+                <span class="qty-value">0</span>
+                <button type="button" class="qty-btn plus">+</button>
+              </div>
+            </div>
+
+            <div class="order-item" data-name="Crispy Lotus Stem" data-price="290">
+              <div class="order-item-main">
+                <div class="order-item-name">Crispy Lotus Stem</div>
+                <div class="order-item-price">₹290</div>
+              </div>
+              <div class="qty-box">
+                <button type="button" class="qty-btn minus">−</button>
+                <span class="qty-value">0</span>
+                <button type="button" class="qty-btn plus">+</button>
+              </div>
+            </div>
+
+            <div class="order-item" data-name="Stuffed Mushrooms" data-price="310">
+              <div class="order-item-main">
+                <div class="order-item-name">Stuffed Mushrooms</div>
+                <div class="order-item-price">₹310</div>
+              </div>
+              <div class="qty-box">
+                <button type="button" class="qty-btn minus">−</button>
+                <span class="qty-value">0</span>
+                <button type="button" class="qty-btn plus">+</button>
+              </div>
+            </div>
+
+            <div class="order-item" data-name="Cheese Balls" data-price="270">
+              <div class="order-item-main">
+                <div class="order-item-name">Cheese Balls</div>
+                <div class="order-item-price">₹270</div>
+              </div>
+              <div class="qty-box">
+                <button type="button" class="qty-btn minus">−</button>
+                <span class="qty-value">0</span>
+                <button type="button" class="qty-btn plus">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="order-category">
+            <h3>Main Course</h3>
+
+            <div class="order-item" data-name="Truffle Pasta" data-price="480"><div class="order-item-main"><div class="order-item-name">Truffle Pasta</div><div class="order-item-price">₹480</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Seafood Risotto" data-price="520"><div class="order-item-main"><div class="order-item-name">Seafood Risotto</div><div class="order-item-price">₹520</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Grilled Chicken" data-price="540"><div class="order-item-main"><div class="order-item-name">Grilled Chicken</div><div class="order-item-price">₹540</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Paneer Butter Masala" data-price="420"><div class="order-item-main"><div class="order-item-name">Paneer Butter Masala</div><div class="order-item-price">₹420</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Veg Biryani" data-price="360"><div class="order-item-main"><div class="order-item-name">Veg Biryani</div><div class="order-item-price">₹360</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Herb Rice Bowl" data-price="390"><div class="order-item-main"><div class="order-item-name">Herb Rice Bowl</div><div class="order-item-price">₹390</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Roasted Veg Platter" data-price="440"><div class="order-item-main"><div class="order-item-name">Roasted Veg Platter</div><div class="order-item-price">₹440</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Lemon Butter Fish" data-price="560"><div class="order-item-main"><div class="order-item-name">Lemon Butter Fish</div><div class="order-item-price">₹560</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Paneer Steak" data-price="500"><div class="order-item-main"><div class="order-item-name">Paneer Steak</div><div class="order-item-price">₹500</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+          </div>
+
+          <div class="order-category">
+            <h3>Chef Specials</h3>
+
+            <div class="order-item" data-name="Classic Tasting Platter" data-price="690"><div class="order-item-main"><div class="order-item-name">Classic Tasting Platter</div><div class="order-item-price">₹690</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Vegetarian Sampler" data-price="620"><div class="order-item-main"><div class="order-item-name">Vegetarian Sampler</div><div class="order-item-price">₹620</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Signature Velora Platter" data-price="780"><div class="order-item-main"><div class="order-item-name">Signature Velora Platter</div><div class="order-item-price">₹780</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Chef’s Fusion Bowl" data-price="540"><div class="order-item-main"><div class="order-item-name">Chef’s Fusion Bowl</div><div class="order-item-price">₹540</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Grilled Herb Medley" data-price="460"><div class="order-item-main"><div class="order-item-name">Grilled Herb Medley</div><div class="order-item-price">₹460</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Spiced Cottage Delight" data-price="420"><div class="order-item-main"><div class="order-item-name">Spiced Cottage Delight</div><div class="order-item-price">₹420</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Golden Crunch Basket" data-price="390"><div class="order-item-main"><div class="order-item-name">Golden Crunch Basket</div><div class="order-item-price">₹390</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Luxury Starter Duo" data-price="510"><div class="order-item-main"><div class="order-item-name">Luxury Starter Duo</div><div class="order-item-price">₹510</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="House Special Skewers" data-price="470"><div class="order-item-main"><div class="order-item-name">House Special Skewers</div><div class="order-item-price">₹470</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+          </div>
+
+          <div class="order-category">
+            <h3>Add-ons</h3>
+
+            <div class="order-item" data-name="Garlic Bread Basket" data-price="120"><div class="order-item-main"><div class="order-item-name">Garlic Bread Basket</div><div class="order-item-price">₹120</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Sauteed Vegetables" data-price="150"><div class="order-item-main"><div class="order-item-name">Sauteed Vegetables</div><div class="order-item-price">₹150</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Extra Cheese" data-price="80"><div class="order-item-main"><div class="order-item-name">Extra Cheese</div><div class="order-item-price">₹80</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Herb Butter" data-price="60"><div class="order-item-main"><div class="order-item-name">Herb Butter</div><div class="order-item-price">₹60</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Extra Sauce" data-price="60"><div class="order-item-main"><div class="order-item-name">Extra Sauce</div><div class="order-item-price">₹60</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="House Salad" data-price="170"><div class="order-item-main"><div class="order-item-name">House Salad</div><div class="order-item-price">₹170</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Grilled Paneer Cubes" data-price="140"><div class="order-item-main"><div class="order-item-name">Grilled Paneer Cubes</div><div class="order-item-price">₹140</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Chicken Add-on" data-price="180"><div class="order-item-main"><div class="order-item-name">Chicken Add-on</div><div class="order-item-price">₹180</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Rice Portion" data-price="110"><div class="order-item-main"><div class="order-item-name">Rice Portion</div><div class="order-item-price">₹110</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+          </div>
+
+          <div class="order-category">
+            <h3>Desserts</h3>
+
+            <div class="order-item" data-name="Matcha Lava Cake" data-price="280"><div class="order-item-main"><div class="order-item-name">Matcha Lava Cake</div><div class="order-item-price">₹280</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Chocolate Brownie" data-price="240"><div class="order-item-main"><div class="order-item-name">Chocolate Brownie</div><div class="order-item-price">₹240</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Tiramisu" data-price="300"><div class="order-item-main"><div class="order-item-name">Tiramisu</div><div class="order-item-price">₹300</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Classic Cheesecake" data-price="260"><div class="order-item-main"><div class="order-item-name">Classic Cheesecake</div><div class="order-item-price">₹260</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Caramel Pudding" data-price="230"><div class="order-item-main"><div class="order-item-name">Caramel Pudding</div><div class="order-item-price">₹230</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Hazelnut Mousse" data-price="290"><div class="order-item-main"><div class="order-item-name">Hazelnut Mousse</div><div class="order-item-price">₹290</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Ice Cream Sundae" data-price="210"><div class="order-item-main"><div class="order-item-name">Ice Cream Sundae</div><div class="order-item-price">₹210</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Molten Chocolate Cup" data-price="270"><div class="order-item-main"><div class="order-item-name">Molten Chocolate Cup</div><div class="order-item-price">₹270</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Berry Delight Bowl" data-price="250"><div class="order-item-main"><div class="order-item-name">Berry Delight Bowl</div><div class="order-item-price">₹250</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+          </div>
+
+          <div class="order-category">
+            <h3>Beverages</h3>
+
+            <div class="order-item" data-name="Cold Coffee" data-price="180"><div class="order-item-main"><div class="order-item-name">Cold Coffee</div><div class="order-item-price">₹180</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Cappuccino" data-price="160"><div class="order-item-main"><div class="order-item-name">Cappuccino</div><div class="order-item-price">₹160</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Mojito" data-price="200"><div class="order-item-main"><div class="order-item-name">Mojito</div><div class="order-item-price">₹200</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Milkshake" data-price="220"><div class="order-item-main"><div class="order-item-name">Milkshake</div><div class="order-item-price">₹220</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Smoothies" data-price="240"><div class="order-item-main"><div class="order-item-name">Smoothies</div><div class="order-item-price">₹240</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Iced Latte" data-price="210"><div class="order-item-main"><div class="order-item-name">Iced Latte</div><div class="order-item-price">₹210</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Fresh Lime Soda" data-price="140"><div class="order-item-main"><div class="order-item-name">Fresh Lime Soda</div><div class="order-item-price">₹140</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Hot Chocolate" data-price="190"><div class="order-item-main"><div class="order-item-name">Hot Chocolate</div><div class="order-item-price">₹190</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+            <div class="order-item" data-name="Green Tea" data-price="120"><div class="order-item-main"><div class="order-item-name">Green Tea</div><div class="order-item-price">₹120</div></div><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty-value">0</span><button type="button" class="qty-btn plus">+</button></div></div>
+          </div>
+        </div>
+
+        <div class="order-bottom">          
+          <div class="order-summary" id="order-summary">
+            <div><strong>Selected Items:</strong> 0</div>
+            <div><strong>Total:</strong> ₹0</div>
+          </div>
+          <div class="order-actions">
+            <button type="button" class="order-clear-btn" id="order-clear">Clear</button>
+            <button type="button" class="order-next-btn" id="order-next">Order Now</button>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 2 -->
+    <div class="order-screen" id="order-screen-details">
+      <div class="order-shell">
+        <div class="order-top">
+          <div>
+            <div class="order-brand">Velora</div>
+            <div class="order-subtitle">Guest Details</div>
+          </div>
+        </div>
+
+        <div class="order-header-line"></div>
+
+        <div class="order-form-wrap">
+          <div class="order-form-card">
+            <h3>Complete Your Order</h3>
+            <p>Please enter your details below. Your selected items only will be sent on WhatsApp in a clean format.</p>
+
+            <input type="text" id="order-customer-name" placeholder="Your Name">
+            <input type="tel" id="order-customer-phone" placeholder="Phone Number">
+            <textarea id="order-customer-address" placeholder="Full Address"></textarea>
+
+            <div class="order-form-msg" id="order-form-msg"></div>
+
+            <div class="order-form-actions">
+              <button type="button" class="order-back-btn" id="order-back">Back</button>
+              <button type="button" class="order-send-btn" id="order-send">Send on WhatsApp</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- Additional -->
+
+<div id="progress"></div>
+
+</body>
+</html>
